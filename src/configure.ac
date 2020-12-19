@@ -25,15 +25,7 @@ function test_dyn {
   fi
 }
 
-function test_libdwarf {
-  if test "x$LIBDWARF_INC_DIR" == "x" ; then
-    AC_MSG_WARN([Libdwarf include directory not specified])
-  fi
 
-  if test "x$LIBDWARF_LIB_DIR" == "x" ; then
-    AC_MSG_WARN([Libdwarf library directory not specified])
-  fi
-}
 
 function test_libelf {
   if test "x$LIBELF_INC_DIR" == "x" ; then
@@ -111,19 +103,7 @@ AC_ARG_WITH(libelf-libdir,
 
 
 
-# Libdwarf ARGS
-AC_ARG_WITH(libdwarf,
-            [AS_HELP_STRING([--with-libdwarf],[LIBDWARF directory (must contain ./lib and ./include)])],
-            [LIBDWARF_INC_DIR="${withval}/include";
-            LIBDWARF_LIB_DIR="${withval}/lib";],)
 
-AC_ARG_WITH(libdwarf-incdir,
-            [AS_HELP_STRING([--with-libdwarf-incdir],[LIBDWARF include directory])],
-            [LIBDWARF_INC_DIR="${withval}";],)
-
-AC_ARG_WITH(libdwarf-libdir,
-            [AS_HELP_STRING([--with-libdwarf-libdir],[LIBDWARF library directory])],
-            [LIBDWARF_LIB_DIR="${withval}";],)
 
 
 ## Libdw ARG
@@ -169,16 +149,7 @@ if test "x$PAPI_LIB_DIR" != "x" ; then
    LDFLAGS="-L${PAPI_LIB_DIR} ${LDFLAGS}"
 fi
 
-# -------------------------------------------------------- #
-# ----------------------- Libs --------------------------- # 
 
-if test "x$LIBDWARF_INC_DIR" != "x" ; then
-   CXXFLAGS="-I${LIBDWARF_INC_DIR} ${CXXFLAGS}"
-fi
-
-if test "x$LIBDWARF_LIB_DIR" != "x" ; then
-   LDFLAGS="-L${LIBDWARF_LIB_DIR} ${LDFLAGS}"
-fi
 
 if test "x$LIBELF_INC_DIR" != "x" ; then
    CXXFLAGS="-I${LIBELF_INC_DIR} ${CXXFLAGS}"
@@ -229,11 +200,7 @@ AC_CHECK_LIB([elf], [elf_getshdrstrndx],
 AC_CHECK_LIB([iberty], [cplus_demangle],
             [],[test_libiberty; AC_MSG_ERROR([iberty library not found])])
 
-#AC_CHECK_LIB([dw], [dwarf_begin],
-#            [], [test_libdw; AC_MSG_ERROR([libdw library not found: libdw.so must be in the system])], [-ldwarf])
 
-AC_CHECK_LIB([dwarf], [dwarf_next_cu_header_c],
-            [],[test_libdwarf; AC_MSG_ERROR([dwarf library not found])])
 
 AC_CHECK_LIB([dyninstAPI], [_init],
             [],[AC_MSG_ERROR([dyninstAPI library not found])])
