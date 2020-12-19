@@ -648,9 +648,6 @@ with_libiberty_incdir
 with_libelf
 with_libelf_incdir
 with_libelf_libdir
-with_libdwarf
-with_libdwarf_incdir
-with_libdwarf_libdir
 with_dyninst
 with_dyninst_libdir
 with_dyninst_incdir
@@ -1284,10 +1281,6 @@ Optional Packages:
   --with-libelf           LIBELF directory (must contain ./lib and ./include)
   --with-libelf-incdir    LIBELF include directory
   --with-libelf-libdir    LIBELF library directory
-  --with-libdwarf         LIBDWARF directory (must contain ./lib and
-                          ./include)
-  --with-libdwarf-incdir  LIBDWARF include directory
-  --with-libdwarf-libdir  LIBDWARF library directory
   --with-dyninst          DYNINST directory (must contain ./lib and ./include
   --with-dyninst-libdir   Directory to look for dyninst libraries
   --with-dyninst-incdir   Directory to look for dyninst headers
@@ -2774,17 +2767,7 @@ $as_echo "$as_me: WARNING: Dyninst library directory not specified" >&2;}
   fi
 }
 
-function test_libdwarf {
-  if test "x$LIBDWARF_INC_DIR" == "x" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Libdwarf include directory not specified" >&5
-$as_echo "$as_me: WARNING: Libdwarf include directory not specified" >&2;}
-  fi
 
-  if test "x$LIBDWARF_LIB_DIR" == "x" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Libdwarf library directory not specified" >&5
-$as_echo "$as_me: WARNING: Libdwarf library directory not specified" >&2;}
-  fi
-}
 
 function test_libelf {
   if test "x$LIBELF_INC_DIR" == "x" ; then
@@ -2894,27 +2877,6 @@ fi
 
 
 
-# Libdwarf ARGS
-
-# Check whether --with-libdwarf was given.
-if test "${with_libdwarf+set}" = set; then :
-  withval=$with_libdwarf; LIBDWARF_INC_DIR="${withval}/include";
-            LIBDWARF_LIB_DIR="${withval}/lib";
-fi
-
-
-
-# Check whether --with-libdwarf-incdir was given.
-if test "${with_libdwarf_incdir+set}" = set; then :
-  withval=$with_libdwarf_incdir; LIBDWARF_INC_DIR="${withval}";
-fi
-
-
-
-# Check whether --with-libdwarf-libdir was given.
-if test "${with_libdwarf_libdir+set}" = set; then :
-  withval=$with_libdwarf_libdir; LIBDWARF_LIB_DIR="${withval}";
-fi
 
 
 
@@ -2973,13 +2935,6 @@ fi
 # -------------------------------------------------------- #
 # ----------------------- Libs --------------------------- #
 
-if test "x$LIBDWARF_INC_DIR" != "x" ; then
-   CXXFLAGS="-I${LIBDWARF_INC_DIR} ${CXXFLAGS}"
-fi
-
-if test "x$LIBDWARF_LIB_DIR" != "x" ; then
-   LDFLAGS="-L${LIBDWARF_LIB_DIR} ${LDFLAGS}"
-fi
 
 if test "x$LIBELF_INC_DIR" != "x" ; then
    CXXFLAGS="-I${LIBELF_INC_DIR} ${CXXFLAGS}"
@@ -3196,57 +3151,6 @@ _ACEOF
 
 else
   test_libiberty; as_fn_error $? "iberty library not found" "$LINENO" 5
-fi
-
-
-#AC_CHECK_LIB([dw], [dwarf_begin],
-#            [], [test_libdw; AC_MSG_ERROR([libdw library not found: libdw.so must be in the system])], [-ldwarf])
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for dwarf_next_cu_header_c in -ldwarf" >&5
-$as_echo_n "checking for dwarf_next_cu_header_c in -ldwarf... " >&6; }
-if ${ac_cv_lib_dwarf_dwarf_next_cu_header_c+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-ldwarf  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char dwarf_next_cu_header_c ();
-int
-main ()
-{
-return dwarf_next_cu_header_c ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"; then :
-  ac_cv_lib_dwarf_dwarf_next_cu_header_c=yes
-else
-  ac_cv_lib_dwarf_dwarf_next_cu_header_c=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_dwarf_dwarf_next_cu_header_c" >&5
-$as_echo "$ac_cv_lib_dwarf_dwarf_next_cu_header_c" >&6; }
-if test "x$ac_cv_lib_dwarf_dwarf_next_cu_header_c" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBDWARF 1
-_ACEOF
-
-  LIBS="-ldwarf $LIBS"
-
-else
-  test_libdwarf; as_fn_error $? "dwarf library not found" "$LINENO" 5
 fi
 
 
